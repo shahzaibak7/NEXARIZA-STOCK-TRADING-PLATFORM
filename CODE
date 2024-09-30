@@ -1,0 +1,88 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Stock {
+    String name;
+    double price;
+
+    Stock(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+}
+
+class Portfolio {
+    ArrayList<Stock> stocks;
+
+    Portfolio() {
+        this.stocks = new ArrayList<>();
+    }
+
+    void buyStock(Stock stock) {
+        stocks.add(stock);
+        System.out.println("Bought " + stock.name + " at $" + stock.price);
+    }
+
+    void sellStock(String name) {
+        for (int i = 0; i < stocks.size(); i++) {
+            if (stocks.get(i).name.equals(name)) {
+                System.out.println("Sold " + name + " at $" + stocks.get(i).price);
+                stocks.remove(i);
+                return;
+            }
+        }
+        System.out.println("Stock not found in portfolio.");
+    }
+
+    void displayPortfolio() {
+        System.out.println("Current Portfolio:");
+        for (Stock stock : stocks) {
+            System.out.println(stock.name + " - $" + stock.price);
+        }
+    }
+}
+
+public class StockTrading {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Portfolio portfolio = new Portfolio();
+
+        while (true) {
+            System.out.println("1. Buy Stock");
+            System.out.println("2. Sell Stock");
+            System.out.println("3. View Portfolio");
+            System.out.println("4. Exit");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); 
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter stock name:");
+                    String name = scanner.nextLine();
+                    System.out.println("Enter stock price:");
+                    double price = scanner.nextDouble();
+                    Stock stock = new Stock(name, price);
+                    portfolio.buyStock(stock);
+                    break;
+
+                case 2:
+                    System.out.println("Enter stock name to sell:");
+                    String stockName = scanner.nextLine();
+                    portfolio.sellStock(stockName);
+                    break;
+
+                case 3:
+                    portfolio.displayPortfolio();
+                    break;
+
+                case 4:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+}
